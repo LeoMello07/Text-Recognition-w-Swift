@@ -8,19 +8,22 @@
 
 import UIKit
 import MobileCoreServices
+import TesseractOCR
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-
+    
+    @IBOutlet weak var textView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    @IBAction func takephoto(){
+    @IBAction func takephoto(_ sender: Any){
         let imagePickerActionSheet =
           UIAlertController(title: "Snap/Upload Image",
                             message: nil,
                             preferredStyle: .actionSheet)
-
+        
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
           let cameraButton = UIAlertAction(
             title: "Take Photo",
@@ -34,8 +37,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
           }
           imagePickerActionSheet.addAction(cameraButton)
         }
-
-        // 3
+        
         let libraryButton = UIAlertAction(
           title: "Choose Existing",
           style: .default) { (alert) -> Void in
@@ -45,28 +47,61 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             imagePicker.mediaTypes = [kUTTypeImage as String]
         }
         imagePickerActionSheet.addAction(libraryButton)
-
-        // 4
+        
         let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
         imagePickerActionSheet.addAction(cancelButton)
-
-        // 5
+        
         present(imagePickerActionSheet, animated: true)
+        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // 1
+        
         guard let selectedPhoto =
           info[.originalImage] as? UIImage else {
             dismiss(animated: true)
             return
         }
-        // 3
         dismiss(animated: true) {
-           // self.performImageRecognition(selectedPhoto)
+            self.performImageRecognition(selectedPhoto)
         }
-
-
     }
+    
+    
+    //MARK: -- Tesseract
+    // Tesseract Image Recognition
+    func performImageRecognition(_ image: UIImage){
+        let scaledImage = image.scaledImage(1000) ?? image
+        
+        if let tesseract = G8Tesseract(language: "por") {
+          tesseract.engineMode = .tesseractCubeCombined
+          tesseract.pageSegmentationMode = .auto
+          tesseract.image = scaledImage
+          tesseract.recognize()
+          textView.text = tesseract.recognizedText
+        }
+        
+    }
+}
 
+// MARK: - UIImage extension
+
+extension UIImage {
+  
+  func scaledImage(_ maxDimension: CGFloat) -> UIImage? {
+  
+    var scaledSize = CGSize(width: maxDimension, height: maxDimension)
+
+    if size.width > size.height {
+      scaledSize.height = size.height / size.width * scaledSize.width
+    } else {
+      scaledSize.width = size.width / size.height * scaledSize.height
+    }
+    UIGraphicsBeginImageContext(scaledSize)
+    draw(in: CGRect(origin: .zero, size: scaledSize))
+    let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+  
+    return scaledImage
+  }
 }
