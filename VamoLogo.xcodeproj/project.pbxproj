@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1EFFD682D57E20093051952A /* Pods_VamoLogo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30742398EAFD20866BA00BED /* Pods_VamoLogo.framework */; };
 		62255D8E24DC436700F0D509 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62255D8D24DC436700F0D509 /* AppDelegate.swift */; };
 		62255D9024DC436700F0D509 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62255D8F24DC436700F0D509 /* SceneDelegate.swift */; };
 		62255D9224DC436700F0D509 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62255D9124DC436700F0D509 /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		30742398EAFD20866BA00BED /* Pods_VamoLogo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VamoLogo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62255D8A24DC436700F0D509 /* VamoLogo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VamoLogo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62255D8D24DC436700F0D509 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62255D8F24DC436700F0D509 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,6 +28,8 @@
 		62255D9924DC436A00F0D509 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		62255D9C24DC436A00F0D509 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		62255D9E24DC436A00F0D509 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.release.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.release.xcconfig"; sourceTree = "<group>"; };
+		D921F188896AF0C87677C01D /* Pods-VamoLogo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.debug.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +37,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EFFD682D57E20093051952A /* Pods_VamoLogo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		453401B999C2E4C501ED849D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D921F188896AF0C87677C01D /* Pods-VamoLogo.debug.xcconfig */,
+				AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		62255D8124DC436700F0D509 = {
 			isa = PBXGroup;
 			children = (
 				62255D8C24DC436700F0D509 /* VamoLogo */,
 				62255D8B24DC436700F0D509 /* Products */,
+				453401B999C2E4C501ED849D /* Pods */,
+				9859DADAC6A3719C58EEA5E5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +87,14 @@
 			path = VamoLogo;
 			sourceTree = "<group>";
 		};
+		9859DADAC6A3719C58EEA5E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				30742398EAFD20866BA00BED /* Pods_VamoLogo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,9 +102,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 62255DA124DC436A00F0D509 /* Build configuration list for PBXNativeTarget "VamoLogo" */;
 			buildPhases = (
+				4BB1AC3F4A4DFA9951D9F912 /* [CP] Check Pods Manifest.lock */,
 				62255D8624DC436700F0D509 /* Sources */,
 				62255D8724DC436700F0D509 /* Frameworks */,
 				62255D8824DC436700F0D509 /* Resources */,
+				D885B2737FEA97433CD45A06 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -135,6 +162,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4BB1AC3F4A4DFA9951D9F912 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VamoLogo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D885B2737FEA97433CD45A06 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VamoLogo/Pods-VamoLogo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VamoLogo/Pods-VamoLogo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VamoLogo/Pods-VamoLogo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		62255D8624DC436700F0D509 /* Sources */ = {
@@ -286,6 +355,7 @@
 		};
 		62255DA224DC436A00F0D509 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D921F188896AF0C87677C01D /* Pods-VamoLogo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -304,6 +374,7 @@
 		};
 		62255DA324DC436A00F0D509 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
