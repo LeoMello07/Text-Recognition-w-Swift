@@ -16,15 +16,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aW9-Ct-j6v">
-                                <rect key="frame" x="184" y="558" width="46" height="30"/>
+                                <rect key="frame" x="103" y="231" width="166" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="FAZ TUDO"/>
                                 <connections>
-                                    <action selector="takephoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wmh-fu-ERx"/>
+                                    <action selector="takephoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5qz-4a-1H1"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TYo-zG-AGp">
-                                <rect key="frame" x="78" y="138" width="240" height="356"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Po1-tt-Tkd">
+                                <rect key="frame" x="87" y="299" width="240" height="372"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -37,12 +37,45 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="textView" destination="TYo-zG-AGp" id="EIj-Tv-lFf"/>
+                        <outlet property="textView" destination="Po1-tt-Tkd" id="Txx-4u-dT6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-30.434782608695656" y="93.75"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wys-xn-AEs">
+            <objects>
+                <navigationController id="zSX-cn-nye" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="mAk-MG-IbL"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GZo-Kr-RdE">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="dpo-s5-KVV" kind="relationship" relationship="rootViewController" id="c4H-Pt-6GE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F7g-2H-XtR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="777" y="94"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="D4W-6Z-SJw">
+            <objects>
+                <viewController id="dpo-s5-KVV" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="C0e-Ll-NXV">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="dv9-ks-Rn4"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ZnZ-X2-Fgq"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6HD-Fj-13f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1557" y="94"/>
         </scene>
     </scenes>
 </document>
