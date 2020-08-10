@@ -15,7 +15,6 @@
 		62255D9824DC436700F0D509 /* VamoLogo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 62255D9624DC436700F0D509 /* VamoLogo.xcdatamodeld */; };
 		62255D9A24DC436A00F0D509 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62255D9924DC436A00F0D509 /* Assets.xcassets */; };
 		62255D9D24DC436A00F0D509 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62255D9B24DC436A00F0D509 /* LaunchScreen.storyboard */; };
-		62255DA524DC450A00F0D509 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 62255DA424DC450A00F0D509 /* tessdata */; };
 		629CFE2324DC729A005F4780 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CFE2224DC729A005F4780 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +29,6 @@
 		62255D9924DC436A00F0D509 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		62255D9C24DC436A00F0D509 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		62255D9E24DC436A00F0D509 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		62255DA424DC450A00F0D509 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		629CFE2224DC729A005F4780 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.release.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.release.xcconfig"; sourceTree = "<group>"; };
 		D921F188896AF0C87677C01D /* Pods-VamoLogo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.debug.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -78,7 +76,6 @@
 		62255D8C24DC436700F0D509 /* VamoLogo */ = {
 			isa = PBXGroup;
 			children = (
-				62255DA424DC450A00F0D509 /* tessdata */,
 				62255D8D24DC436700F0D509 /* AppDelegate.swift */,
 				62255D8F24DC436700F0D509 /* SceneDelegate.swift */,
 				62255D9124DC436700F0D509 /* ViewController.swift */,
@@ -161,7 +158,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				62255D9D24DC436A00F0D509 /* LaunchScreen.storyboard in Resources */,
-				62255DA524DC450A00F0D509 /* tessdata in Resources */,
 				62255D9A24DC436A00F0D509 /* Assets.xcassets in Resources */,
 				62255D9524DC436700F0D509 /* Main.storyboard in Resources */,
 			);

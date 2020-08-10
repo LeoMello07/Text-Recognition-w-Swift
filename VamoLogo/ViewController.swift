@@ -16,9 +16,65 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptu
     
     @IBOutlet weak var textView: UITextView!
     
+    private let tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
+    private var textDetectionRequest: VNDetectTextRectanglesRequest?
+    private var textObservations = [VNTextObservation]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+         tesseract?.charWhitelist = "AÁÃÀÂBCÇDEÉÈÊFGHIÍÌÎJKLMNOÓÒÕÔPQRSTUÚÙÛVWXYZaáãàâbcçdeéèêfghiíìîjklmnoóòõôpqrstuúùûvwxyz1234567890()-+*!/?.,@#$%&"
     }
+    
+    private func configureTextDetection() {
+        textDetectionRequest = VNDetectTextRectanglesRequest(completionHandler: handleDetection)
+        textDetectionRequest?.reportCharacterBoxes = true
+    }
+    
+    private func handleDetection(request: VNRequest, error: Error?) {
+        
+        guard let detectionResults = request.results else {
+            print("No detection results")
+            return
+        }
+        let textResults = detectionResults.map() {
+            return $0 as? VNTextObservation
+        }
+        if textResults.isEmpty {
+            return
+        }
+        textObservations = textResults as! [VNTextObservation]
+        DispatchQueue.main.async {
+            
+            guard let sublayers = self.view.layer.sublayers else {
+                return
+            }
+            for layer in sublayers[1...] {
+                if (layer as? CATextLayer) == nil {
+                    layer.removeFromSuperlayer()
+                }
+            }
+            let viewWidth = self.view.frame.size.width
+            let viewHeight = self.view.frame.size.height
+            for result in textResults {
+
+                if let textResult = result {
+                    
+                    let layer = CALayer()
+                    var rect = textResult.boundingBox
+                    rect.origin.x *= viewWidth
+                    rect.size.height *= viewHeight
+                    rect.origin.y = ((1 - rect.origin.y) * viewHeight) - rect.size.height
+                    rect.size.width *= viewWidth
+
+                    layer.frame = rect
+                    layer.borderWidth = 2
+                    layer.borderColor = UIColor.red.cgColor
+                    self.view.layer.addSublayer(layer)
+                }
+            }
+        }
+    }
+    
 
        @IBAction func takephoto(_ sender: Any){
         
@@ -37,7 +93,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptu
               imagePicker.sourceType = .camera
               imagePicker.mediaTypes = [kUTTypeImage as String]
               self.present(imagePicker, animated: true, completion: {
-                
+                self.configureTextDetection()
               })
           }
           imagePickerActionSheet.addAction(cameraButton)
@@ -80,13 +136,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptu
     func performImageRecognition(_ image: UIImage){
         let scaledImage = image.scaledImage(1000) ?? image
         
-        if let tesseract = G8Tesseract(language: "eng") {
-          tesseract.engineMode = .tesseractCubeCombined
-          tesseract.pageSegmentationMode = .auto
-          tesseract.image = scaledImage
-          tesseract.recognize()
-             textView.text = tesseract.recognizedText
-        }
+          tesseract?.engineMode = .tesseractCubeCombined
+          tesseract?.pageSegmentationMode = .auto
+          tesseract?.image = scaledImage
+          tesseract?.recognize()
+          textView.text = tesseract?.recognizedText
+        
         
     }
 
