@@ -6,171 +6,118 @@
 //  Copyright © 2020 Leonardo Mello. All rights reserved.
 //
 
-import AVFoundation
 import UIKit
-import MobileCoreServices
-import TesseractOCR
 import Vision
+import VisionKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
-    
-    @IBOutlet weak var textView: UITextView!
-    
-    private let tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
-    private var textDetectionRequest: VNDetectTextRectanglesRequest?
-    private var textObservations = [VNTextObservation]()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-         tesseract?.charWhitelist = "AÁÃÀÂBCÇDEÉÈÊFGHIÍÌÎJKLMNOÓÒÕÔPQRSTUÚÙÛVWXYZaáãàâbcçdeéèêfghiíìîjklmnoóòõôpqrstuúùûvwxyz1234567890()-+*!/?.,@#$%&"
-    }
-    
-    private func configureTextDetection() {
-        textDetectionRequest = VNDetectTextRectanglesRequest(completionHandler: handleDetection)
-        textDetectionRequest?.reportCharacterBoxes = true
-    }
-    
-    private func handleDetection(request: VNRequest, error: Error?) {
+class ViewController: UIViewController {
+   private var scanButton = ScanButton(frame: .zero)
+        private var scanImageView = ScanImageView(frame: .zero)
+        private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
+        private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
         
-        guard let detectionResults = request.results else {
-            print("No detection results")
-            return
-        }
-        let textResults = detectionResults.map() {
-            return $0 as? VNTextObservation
-        }
-        if textResults.isEmpty {
-            return
-        }
-        textObservations = textResults as! [VNTextObservation]
-        DispatchQueue.main.async {
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
             
-            guard let sublayers = self.view.layer.sublayers else {
+            configure()
+            configureOCR()
+        }
+
+        
+        private func configure() {
+            view.addSubview(scanImageView)
+            view.addSubview(ocrTextView)
+            view.addSubview(scanButton)
+            
+            let padding: CGFloat = 16
+            NSLayoutConstraint.activate([
+                scanButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+                scanButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+                scanButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+                scanButton.heightAnchor.constraint(equalToConstant: 50),
+                
+                ocrTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+                ocrTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+                ocrTextView.bottomAnchor.constraint(equalTo: scanButton.topAnchor, constant: -padding),
+                ocrTextView.heightAnchor.constraint(equalToConstant: 200),
+                
+                scanImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+                scanImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
+                scanImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+                scanImageView.bottomAnchor.constraint(equalTo: ocrTextView.topAnchor, constant: -padding)
+            ])
+            
+            scanButton.addTarget(self, action: #selector(scanDocument), for: .touchUpInside)
+        }
+        
+        
+        @objc private func scanDocument() {
+            let scanVC = VNDocumentCameraViewController()
+            scanVC.delegate = self
+            present(scanVC, animated: true)
+        }
+        
+        
+        private func processImage(_ image: UIImage) {
+            guard let cgImage = image.cgImage else { return }
+
+            ocrTextView.text = ""
+            scanButton.isEnabled = false
+            
+            let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+            do {
+                try requestHandler.perform([self.ocrRequest])
+            } catch {
+                print(error)
+            }
+        }
+
+        
+        private func configureOCR() {
+            ocrRequest = VNRecognizeTextRequest { (request, error) in
+                guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
+                
+                var ocrText = ""
+                for observation in observations {
+                    guard let topCandidate = observation.topCandidates(1).first else { return }
+                    
+                    ocrText += topCandidate.string + "\n"
+                }
+                
+                
+                DispatchQueue.main.async {
+                    self.ocrTextView.text = ocrText
+                    self.scanButton.isEnabled = true
+                }
+            }
+            
+            ocrRequest.recognitionLevel = .accurate
+            ocrRequest.recognitionLanguages = ["en-US", "en-GB"]
+            ocrRequest.usesLanguageCorrection = true
+        }
+    }
+
+
+    extension ViewController: VNDocumentCameraViewControllerDelegate {
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            guard scan.pageCount >= 1 else {
+                controller.dismiss(animated: true)
                 return
             }
-            for layer in sublayers[1...] {
-                if (layer as? CATextLayer) == nil {
-                    layer.removeFromSuperlayer()
-                }
-            }
-            let viewWidth = self.view.frame.size.width
-            let viewHeight = self.view.frame.size.height
-            for result in textResults {
-
-                if let textResult = result {
-                    
-                    let layer = CALayer()
-                    var rect = textResult.boundingBox
-                    rect.origin.x *= viewWidth
-                    rect.size.height *= viewHeight
-                    rect.origin.y = ((1 - rect.origin.y) * viewHeight) - rect.size.height
-                    rect.size.width *= viewWidth
-
-                    layer.frame = rect
-                    layer.borderWidth = 2
-                    layer.borderColor = UIColor.red.cgColor
-                    self.view.layer.addSublayer(layer)
-                }
-            }
+            
+            scanImageView.image = scan.imageOfPage(at: 0)
+            processImage(scan.imageOfPage(at: 0))
+            controller.dismiss(animated: true)
         }
-    }
-    
-
-       @IBAction func takephoto(_ sender: Any){
         
-        let imagePickerActionSheet =
-          UIAlertController(title: "Snap/Upload Image",
-                            message: nil,
-                            preferredStyle: .actionSheet)
-
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-          let cameraButton = UIAlertAction(
-            title: "Take Photo",
-            style: .default) { (alert) -> Void in
-      
-              let imagePicker = UIImagePickerController()
-              imagePicker.delegate = self
-              imagePicker.sourceType = .camera
-              imagePicker.mediaTypes = [kUTTypeImage as String]
-              self.present(imagePicker, animated: true, completion: {
-                self.configureTextDetection()
-              })
-          }
-          imagePickerActionSheet.addAction(cameraButton)
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
+            //Handle properly error
+            controller.dismiss(animated: true)
         }
-
-        let libraryButton = UIAlertAction(
-          title: "Choose Existing",
-          style: .default) { (alert) -> Void in
-
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = .photoLibrary
-            imagePicker.mediaTypes = [kUTTypeImage as String]
-            self.present(imagePicker, animated: true, completion: {
-
-            })
-        }
-        imagePickerActionSheet.addAction(libraryButton)
-
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
-        imagePickerActionSheet.addAction(cancelButton)
-
-
-        present(imagePickerActionSheet, animated: true)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let selectedPhoto =
-          info[.originalImage] as? UIImage else {
-            dismiss(animated: true)
-            return
-        }
-        dismiss(animated: true) {
-          self.performImageRecognition(selectedPhoto)
-        }
-    }
-
-    //MARK: -- Tesseract
-    // Tesseract Image Recognition
-    func performImageRecognition(_ image: UIImage){
-        let scaledImage = image.scaledImage(1000) ?? image
         
-          tesseract?.engineMode = .tesseractCubeCombined
-          tesseract?.pageSegmentationMode = .auto
-          tesseract?.image = scaledImage
-          tesseract?.recognize()
-          textView.text = tesseract?.recognizedText
-        
-        
+        func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
+            controller.dismiss(animated: true)
+        }
     }
-
-}
-
-// MARK: - UIImage extension
-
-extension UIImage {
-  
-  func scaledImage(_ maxDimension: CGFloat) -> UIImage? {
-  
-    var scaledSize = CGSize(width: maxDimension, height: maxDimension)
-
-    if size.width > size.height {
-      scaledSize.height = size.height / size.width * scaledSize.width
-    } else {
-      scaledSize.width = size.width / size.height * scaledSize.height
-    }
-    UIGraphicsBeginImageContext(scaledSize)
-    draw(in: CGRect(origin: .zero, size: scaledSize))
-    let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-  
-    return scaledImage
-  }
-}
-
-// MARK: - UINavigationControllerDelegate
-extension ViewController: UINavigationControllerDelegate {
-}
-
 
