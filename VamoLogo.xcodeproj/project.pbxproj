@@ -81,14 +81,14 @@
 			isa = PBXGroup;
 			children = (
 				62255D8D24DC436700F0D509 /* AppDelegate.swift */,
-				62255D8F24DC436700F0D509 /* SceneDelegate.swift */,
 				62255D9124DC436700F0D509 /* ViewController.swift */,
 				629CAB9924E30DD1000979C9 /* ScanImageView.swift */,
 				629CAB9B24E30DE9000979C9 /* ScanButton.swift */,
 				629CAB9D24E30E03000979C9 /* OcrTextView.swift */,
+				62255D8F24DC436700F0D509 /* SceneDelegate.swift */,
 				62255D9324DC436700F0D509 /* Main.storyboard */,
-				62255D9924DC436A00F0D509 /* Assets.xcassets */,
 				62255D9B24DC436A00F0D509 /* LaunchScreen.storyboard */,
+				62255D9924DC436A00F0D509 /* Assets.xcassets */,
 				62255D9E24DC436A00F0D509 /* Info.plist */,
 				62255D9624DC436700F0D509 /* VamoLogo.xcdatamodeld */,
 			);

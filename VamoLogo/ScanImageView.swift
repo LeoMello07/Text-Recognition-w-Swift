@@ -7,14 +7,34 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ScanImageView: UIImageView {
+class ScanImageView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
+        
     }
     
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
+        guard let layer = layer as? AVCaptureVideoPreviewLayer else {
+            fatalError("Expected `AVCaptureVideoPreviewLayer` type for layer. Check PreviewView.layerClass implementation.")
+        }
+        return layer
+    }
+    var session: AVCaptureSession? {
+        get {
+            return videoPreviewLayer.session
+        }
+        set {
+            videoPreviewLayer.session = newValue
+        }
+    }
+    // MARK: UIView
+    override class var layerClass: AnyClass {
+        return AVCaptureVideoPreviewLayer.self
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
