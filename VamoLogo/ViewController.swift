@@ -12,13 +12,13 @@ import VisionKit
 import AVFoundation
 import TesseractOCR
 
-class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
+class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate {
     
     func updateSearchResults(for searchController: UISearchController) {
-        
+       
     }
     
-    
+  
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
         private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
@@ -29,6 +29,9 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private var scanImageView = ScanImageView(frame: .zero)
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
         private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
+    
+    private var isRed: Bool = false
+    private var foundWord = " "
     
     var searchController : UISearchController!
     
@@ -41,7 +44,9 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             self.searchController.searchResultsUpdater = self
             self.searchController.delegate = self
             self.searchController.searchBar.delegate = self
-
+            
+            ocrTextView.isEditable = false
+            
             showSearch()
             configure()
             configureOCR()
@@ -112,11 +117,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         }
     
     private func showSearch(){
-            
-           // self.searchController = UISearchController(searchResultsController:  nil)
              self.searchController.hidesNavigationBarDuringPresentation = false
-             self.searchController.dimsBackgroundDuringPresentation = true
-          
              self.navigationItem.titleView = searchController.searchBar
     }
     
@@ -125,6 +126,33 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         textDetectionRequest?.reportCharacterBoxes = true
     }
     
+    
+      
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if(ocrTextView.text.contains(searchText)){
+            colorText(searchText)
+            foundWord = searchText
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if(ocrTextView.text.contains(foundWord)){
+        colorText(foundWord)
+
+        }
+    }
+
+    private func colorText(_ text : String){
+        let main_string = ocrTextView.text
+        let string_to_color = text
+        let range = (main_string as! NSString).range(of: string_to_color)
+        let attribute = NSMutableAttributedString.init(string: main_string!)
+        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
+        ocrTextView.attributedText = attribute
+        isRed = true
+        
+    }
+
     private func handleDetection(request: VNRequest, error: Error?) {
         
         guard let detectionResults = request.results else {

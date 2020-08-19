@@ -9,7 +9,7 @@
 import UIKit
 
 class OcrTextView: UITextView {
-
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: .zero, textContainer: textContainer)
         configure()
