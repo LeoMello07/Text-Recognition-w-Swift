@@ -126,21 +126,24 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         textDetectionRequest?.reportCharacterBoxes = true
     }
     
-    
-      
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if(ocrTextView.text.contains(searchText)){
-            colorText(searchText)
-            foundWord = searchText
-        }
+       foundWord = searchText
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if(ocrTextView.text.contains(foundWord)){
-        colorText(foundWord)
-
+         if(ocrTextView.text.contains(foundWord)){
+            
+        let alert = UIAlertController(title: "Achamos sua palavra", message: "A palavra pesquisada foi: \(foundWord)", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+                  
+            if !(self.navigationController?.visibleViewController?.isKind(of: UIAlertController.self))! {
+                          self.present(alert, animated: true, completion: nil)
+             }
         }
     }
+  
 
     private func colorText(_ text : String){
         let main_string = ocrTextView.text
@@ -228,10 +231,11 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                     
                     ocrText += topCandidate.string + "\n"
                 }
-                
-                
+ 
                 DispatchQueue.main.async {
-                    self.ocrTextView.text = ocrText
+                    if(ocrText.contains(self.foundWord)){
+                        self.ocrTextView.text = "Contém: " + self.foundWord
+                    }
                     self.scanButton.isEnabled = true
                 }
             }
@@ -249,8 +253,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                 controller.dismiss(animated: true)
                 return
             }
-            
-            //scanImageView.image = scan.imageOfPage(at: 0)
             processImage(scan.imageOfPage(at: 0))
             controller.dismiss(animated: true)
         }
@@ -269,7 +271,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
 extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
 // MARK: - Camera Delegate and Setup
     
-func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
 
     guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
         return
@@ -280,7 +282,7 @@ func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBu
         imageRequestOptions[.cameraIntrinsics] = cameraData
     }
     let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: CGImagePropertyOrientation(rawValue: 6)!, options: imageRequestOptions)
-    do {
+        do {
         try imageRequestHandler.perform([ocrRequest])
     }
     catch {
@@ -305,6 +307,7 @@ func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBu
             xMax = max(xMax, rect.bottomRight.x)
             yMin = min(yMin, rect.bottomRight.y)
             yMax = max(yMax, rect.topRight.y)
+            
         }
         let imageRect = CGRect(x: xMin * size.width, y: yMin * size.height, width: (xMax - xMin) * size.width, height: (yMax - yMin) * size.height)
         let context = CIContext(options: nil)
@@ -324,41 +327,8 @@ func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBu
             let width = xMax - xMin
             let height = yMax - yMin
             recognizedTextPositionTuples.append((rect: CGRect(x: x, y: y, width: width, height: height), text: text))
-        }
-    }
-    textObservations.removeAll()
-    DispatchQueue.main.async {
-        let viewWidth = self.view.frame.size.width
-        let viewHeight = self.view.frame.size.height
-        guard let sublayers = self.view.layer.sublayers else {
-            return
-        }
-        for layer in sublayers[1...] {
-            
-            if let _ = layer as? CATextLayer {
-                layer.removeFromSuperlayer()
             }
         }
-        for tuple in recognizedTextPositionTuples {
-            let textLayer = CATextLayer()
-            textLayer.backgroundColor = UIColor.clear.cgColor
-            textLayer.font = self.font
-            var rect = tuple.rect
-
-            rect.origin.x *= viewWidth
-            rect.size.width *= viewWidth
-            rect.origin.y *= viewHeight
-            rect.size.height *= viewHeight
-            
-            // Increase the size of text layer to show text of large lengths
-            rect.size.width += 100
-            rect.size.height += 100
-
-            textLayer.frame = rect
-            textLayer.string = tuple.text
-            textLayer.foregroundColor = UIColor.green.cgColor
-            self.view.layer.addSublayer(textLayer)
-        }
+    //textObservations.removeAll()
     }
-}
 }
