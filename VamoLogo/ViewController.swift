@@ -96,8 +96,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             let padding: CGFloat = 16
             let allCamera: CGFloat = 0
             NSLayoutConstraint.activate([
-                
-                
+
                 ocrTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
                 ocrTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
                 ocrTextView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
