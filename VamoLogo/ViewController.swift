@@ -24,7 +24,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
         private var font = CTFontCreateWithName("Helvetica" as CFString, 18, nil)
     
-        private var scanButton = ScanButton(frame: .zero)
         private let session = AVCaptureSession()
         private var scanImageView = ScanImageView(frame: .zero)
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
@@ -93,27 +92,22 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private func configure() {
             view.addSubview(scanImageView)
             view.addSubview(ocrTextView)
-            view.addSubview(scanButton)
             
             let padding: CGFloat = 16
+            let allCamera: CGFloat = 0
             NSLayoutConstraint.activate([
-                scanButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-                scanButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-                scanButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-                scanButton.heightAnchor.constraint(equalToConstant: 50),
+                
                 
                 ocrTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
                 ocrTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-                ocrTextView.bottomAnchor.constraint(equalTo: scanButton.topAnchor, constant: -padding),
-                ocrTextView.heightAnchor.constraint(equalToConstant: 200),
+                ocrTextView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+                ocrTextView.heightAnchor.constraint(equalToConstant: 100),
                 
-                scanImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-                scanImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-                scanImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-                scanImageView.bottomAnchor.constraint(equalTo: ocrTextView.topAnchor, constant: -padding)
+                scanImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: allCamera),
+                scanImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: allCamera),
+                scanImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -allCamera),
+                scanImageView.bottomAnchor.constraint(equalTo: ocrTextView.topAnchor, constant: -allCamera)
             ])
-            
-            scanButton.addTarget(self, action: #selector(scanDocument), for: .touchUpInside)
         }
     
     private func showSearch(){
@@ -201,17 +195,12 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         }
     }
         
-            
-        @objc private func scanDocument() {
-   
-        }
-        
+
         
         private func processImage(_ image: UIImage) {
             guard let cgImage = image.cgImage else { return }
 
             ocrTextView.text = ""
-            scanButton.isEnabled = false
             
             let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             do {
@@ -231,12 +220,22 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                     
                     ocrText += topCandidate.string + "\n"
                 }
+                
+                guard let detectionResults = request.results else {
+                           print("No detection results")
+                           return
+                       }
+                       let textResults = detectionResults.map() {
+                           return $0 as? VNTextObservation
+                       }
+                       if textResults.isEmpty {
+                           return
+                       }
  
                 DispatchQueue.main.async {
                     if(ocrText.contains(self.foundWord)){
                         self.ocrTextView.text = "Contém: " + self.foundWord
                     }
-                    self.scanButton.isEnabled = true
                 }
             }
             
