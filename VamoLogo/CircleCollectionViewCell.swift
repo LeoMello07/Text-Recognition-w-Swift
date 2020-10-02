@@ -23,7 +23,7 @@ class CircleCollectionViewCell: UICollectionViewCell {
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 25
-        imageView.backgroundColor = .blue
+        imageView.backgroundColor = UIColor(red: 0, green: 0.80, blue: 0.45, alpha: 1)
         
         return imageView
     }()
@@ -51,6 +51,5 @@ class CircleCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         myImageView.image = nil
     }
-    
     
 }

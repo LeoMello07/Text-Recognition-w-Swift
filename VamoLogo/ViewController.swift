@@ -22,7 +22,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     }
     
     
-    private var collectionView: UICollectionView?
+        private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
         private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
@@ -33,10 +33,10 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
         private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
     
-    private var isRed: Bool = false
-    private var foundWord = " "
+        private var isRed: Bool = false
+        private var foundWord = " "
     
-    var searchController : UISearchController!
+        var searchController : UISearchController!
     
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -52,7 +52,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             collectionView?.showsHorizontalScrollIndicator = false
             collectionView?.delegate = self
             collectionView?.dataSource = self
-            collectionView?.backgroundColor = .white
+            collectionView?.backgroundColor = UIColor(white: 1, alpha: 0)
             
             guard let myCollection = collectionView else {
                 return
@@ -61,7 +61,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             cameraView.addSubview(myCollection)
             
             
-             self.searchController = UISearchController(searchResultsController:  nil)
+            self.searchController = UISearchController(searchResultsController:  nil)
             
             self.searchController.searchResultsUpdater = self
             self.searchController.delegate = self
