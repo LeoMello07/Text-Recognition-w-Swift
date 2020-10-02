@@ -23,6 +23,7 @@ class ScanImageView: UIView {
         }
         return layer
     }
+    
     var session: AVCaptureSession? {
         get {
             return videoPreviewLayer.session

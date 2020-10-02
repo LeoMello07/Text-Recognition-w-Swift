@@ -15,6 +15,7 @@
 		62255D9824DC436700F0D509 /* VamoLogo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 62255D9624DC436700F0D509 /* VamoLogo.xcdatamodeld */; };
 		62255D9A24DC436A00F0D509 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62255D9924DC436A00F0D509 /* Assets.xcassets */; };
 		62255D9D24DC436A00F0D509 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62255D9B24DC436A00F0D509 /* LaunchScreen.storyboard */; };
+		623F85792526639C0088D764 /* CircleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623F85782526639C0088D764 /* CircleCollectionViewCell.swift */; };
 		629CAB9A24E30DD1000979C9 /* ScanImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CAB9924E30DD1000979C9 /* ScanImageView.swift */; };
 		629CAB9E24E30E03000979C9 /* OcrTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CAB9D24E30E03000979C9 /* OcrTextView.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		62255D9924DC436A00F0D509 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		62255D9C24DC436A00F0D509 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		62255D9E24DC436A00F0D509 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		623F85782526639C0088D764 /* CircleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCollectionViewCell.swift; sourceTree = "<group>"; };
 		629CAB9924E30DD1000979C9 /* ScanImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanImageView.swift; sourceTree = "<group>"; };
 		629CAB9D24E30E03000979C9 /* OcrTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OcrTextView.swift; sourceTree = "<group>"; };
 		AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.release.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.release.xcconfig"; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				62255D9124DC436700F0D509 /* ViewController.swift */,
 				629CAB9924E30DD1000979C9 /* ScanImageView.swift */,
 				629CAB9D24E30E03000979C9 /* OcrTextView.swift */,
+				623F85782526639C0088D764 /* CircleCollectionViewCell.swift */,
 				62255D8F24DC436700F0D509 /* SceneDelegate.swift */,
 				62255D9324DC436700F0D509 /* Main.storyboard */,
 				62255D9B24DC436A00F0D509 /* LaunchScreen.storyboard */,
@@ -217,6 +220,7 @@
 			files = (
 				629CAB9E24E30E03000979C9 /* OcrTextView.swift in Sources */,
 				62255D9224DC436700F0D509 /* ViewController.swift in Sources */,
+				623F85792526639C0088D764 /* CircleCollectionViewCell.swift in Sources */,
 				62255D9824DC436700F0D509 /* VamoLogo.xcdatamodeld in Sources */,
 				62255D8E24DC436700F0D509 /* AppDelegate.swift in Sources */,
 				62255D9024DC436700F0D509 /* SceneDelegate.swift in Sources */,

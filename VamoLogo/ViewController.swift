@@ -7,18 +7,22 @@
 //
 
 import UIKit
+import SwiftUI
 import Vision
 import VisionKit
 import AVFoundation
 import TesseractOCR
 
-class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate {
+class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    private let models = ["img1", "img2", "img3", "img1", "img2", "img3", "img1", "img2", "img3"]
     
     func updateSearchResults(for searchController: UISearchController) {
        
     }
     
-  
+    
+    private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
         private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
@@ -34,11 +38,30 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     
     var searchController : UISearchController!
     
-        
         override func viewDidLoad() {
             super.viewDidLoad()
-             self.searchController = UISearchController(searchResultsController:  nil)
             
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            layout.itemSize = CGSize(width: 100, height: 50)
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            
+            collectionView?.register(CircleCollectionViewCell.self, forCellWithReuseIdentifier: CircleCollectionViewCell.identifier)
+            
+            collectionView?.showsHorizontalScrollIndicator = false
+            collectionView?.delegate = self
+            collectionView?.dataSource = self
+            collectionView?.backgroundColor = .white
+            
+            guard let myCollection = collectionView else {
+                return
+            }
+            
+            cameraView.addSubview(myCollection)
+            
+            
+             self.searchController = UISearchController(searchResultsController:  nil)
             
             self.searchController.searchResultsUpdater = self
             self.searchController.delegate = self
@@ -52,6 +75,32 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             configureCamera()
             configureTextDetection()
         }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView?.frame = CGRect(x: 0, y: 0, width: cameraView.frame.size.width, height: 60).integral
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return models.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CircleCollectionViewCell.identifier, for: indexPath) as! CircleCollectionViewCell
+        
+        let title = UILabel(frame: CGRect(x: 0, y: 5, width: cell.bounds.size.width, height: 40))
+            title.textColor = UIColor.white
+            title.text = "Trigo"
+            title.textAlignment = .center
+            cell.contentView.addSubview(title)
+    
+        return cell
+       
+    }
+    
+    
+    
+    
     
     private var cameraView: ScanImageView {
         return scanImageView
@@ -105,7 +154,8 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                 scanImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: allCamera),
                 scanImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: allCamera),
                 scanImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -allCamera),
-                scanImageView.bottomAnchor.constraint(equalTo: ocrTextView.topAnchor, constant: -allCamera)
+                scanImageView.bottomAnchor.constraint(equalTo: ocrTextView.topAnchor, constant: -allCamera),
+                
             ])
         }
     
@@ -141,7 +191,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     private func colorText(_ text : String){
         let main_string = ocrTextView.text
         let string_to_color = text
-        let range = (main_string as! NSString).range(of: string_to_color)
+        let range = (main_string! as NSString).range(of: string_to_color)
         let attribute = NSMutableAttributedString.init(string: main_string!)
         attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
         ocrTextView.attributedText = attribute
@@ -234,6 +284,8 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                 DispatchQueue.main.async {
                     if(ocrText.contains(self.foundWord)){
                         self.ocrTextView.text = "Contém: " + self.foundWord
+                    } else {
+                        self.ocrTextView.text =  "Palavra não encontrada: " + self.foundWord
                     }
                 }
             }
@@ -327,6 +379,5 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             recognizedTextPositionTuples.append((rect: CGRect(x: x, y: y, width: width, height: height), text: text))
             }
         }
-    //textObservations.removeAll()
     }
 }
