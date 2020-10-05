@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 class CircleCollectionViewCell: UICollectionViewCell {
     
     
@@ -27,6 +28,7 @@ class CircleCollectionViewCell: UICollectionViewCell {
         
         return imageView
     }()
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)

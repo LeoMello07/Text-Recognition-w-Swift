@@ -15,7 +15,7 @@ import TesseractOCR
 
 class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    private let models = ["img1", "img2", "img3", "img1", "img2", "img3", "img1", "img2", "img3"]
+    
     
     func updateSearchResults(for searchController: UISearchController) {
        
@@ -33,8 +33,10 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
         private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
     
-        private var isRed: Bool = false
+//      private var isRed: Bool = false
         private var foundWord = " "
+    
+        private var models = [String]()
     
         var searchController : UISearchController!
     
@@ -54,9 +56,13 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             collectionView?.dataSource = self
             collectionView?.backgroundColor = UIColor(white: 1, alpha: 0)
             
+            
+            
             guard let myCollection = collectionView else {
                 return
             }
+            
+        
             
             cameraView.addSubview(myCollection)
             
@@ -76,29 +82,38 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             configureTextDetection()
         }
     
+    //MARK: -- COLLECTION VIEW - SUGGEST TEXT
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView?.frame = CGRect(x: 0, y: 0, width: cameraView.frame.size.width, height: 60).integral
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        collectionView.reloadData()
         return models.count
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CircleCollectionViewCell.identifier, for: indexPath) as! CircleCollectionViewCell
         
-        let title = UILabel(frame: CGRect(x: 0, y: 5, width: cell.bounds.size.width, height: 40))
-            title.textColor = UIColor.white
-            title.text = "Trigo"
-            title.textAlignment = .center
-            cell.contentView.addSubview(title)
-    
+        cell.configure(with: data[indexPath.row])
+        
+            
+//            let title = UILabel(frame: CGRect(x: 0, y: 5, width: cell.bounds.size.width, height: 40))
+//            title.textColor = UIColor.white
+//            title.text = models[indexPath.row]
+//            title.textAlignment = .center
+//            cell.contentView.addSubview(title)
+        
         return cell
-       
     }
     
+
     
+    
+    //--------------------------------------------------------------------------------------------------------
     
     
     
@@ -174,30 +189,21 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-         if(ocrTextView.text.contains(foundWord)){
-            
-        let alert = UIAlertController(title: "Achamos sua palavra", message: "A palavra pesquisada foi: \(foundWord)", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-            self.present(alert, animated: true)
-                  
-            if !(self.navigationController?.visibleViewController?.isKind(of: UIAlertController.self))! {
-                          self.present(alert, animated: true, completion: nil)
-             }
-        }
+            models.append(foundWord)
+            collectionView?.reloadData()
     }
   
 
-    private func colorText(_ text : String){
-        let main_string = ocrTextView.text
-        let string_to_color = text
-        let range = (main_string! as NSString).range(of: string_to_color)
-        let attribute = NSMutableAttributedString.init(string: main_string!)
-        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
-        ocrTextView.attributedText = attribute
-        isRed = true
-        
-    }
+//    private func colorText(_ text : String){
+//        let main_string = ocrTextView.text
+//        let string_to_color = text
+//        let range = (main_string! as NSString).range(of: string_to_color)
+//        let attribute = NSMutableAttributedString.init(string: main_string!)
+//        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
+//        ocrTextView.attributedText = attribute
+//        isRed = true
+//
+//    }
 
     private func handleDetection(request: VNRequest, error: Error?) {
         
