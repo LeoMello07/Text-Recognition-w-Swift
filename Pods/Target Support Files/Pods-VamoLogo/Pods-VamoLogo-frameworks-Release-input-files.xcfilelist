@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-VamoLogo/Pods-VamoLogo-frameworks.sh
+${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework
 ${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework

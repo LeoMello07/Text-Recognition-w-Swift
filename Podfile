@@ -6,6 +6,7 @@ target 'VamoLogo' do
   use_frameworks!
 
 pod 'TesseractOCRiOS'
+pod 'SQLite.swift', '~> 0.12.0'
 
   # Pods for VamoLogo
 

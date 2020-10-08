@@ -1,16 +1,22 @@
 PODS:
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
   - TesseractOCRiOS (5.0.1)
 
 DEPENDENCIES:
+  - SQLite.swift (~> 0.12.0)
   - TesseractOCRiOS
 
 SPEC REPOS:
   trunk:
+    - SQLite.swift
     - TesseractOCRiOS
 
 SPEC CHECKSUMS:
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   TesseractOCRiOS: 2c189465f86abb030d0c5141c90da9705b647854
 
-PODFILE CHECKSUM: e028b0f00d6f6a57cb6e38ca3a4a91e0ffe1fa5c
+PODFILE CHECKSUM: d9ee0a8cca706dfda768c932baaf70578f45a079
 
 COCOAPODS: 1.9.3

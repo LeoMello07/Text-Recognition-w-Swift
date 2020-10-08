@@ -6,12 +6,16 @@
 //  Copyright © 2020 Leonardo Mello. All rights reserved.
 //
 
+
+//ARRUMAR O VIEWDIDLOAD, BOTAR EM MÉTODOS OS "REPETIDOS"
+
 import UIKit
 import SwiftUI
 import Vision
 import VisionKit
 import AVFoundation
 import TesseractOCR
+import SQLite
 
 class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -20,14 +24,17 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func updateSearchResults(for searchController: UISearchController) {
        
     }
-    
-    
+        var count = 1
+        private var db : Connection? = nil
+        let sugestion = Table("sugestion")
+        let id = Expression<Int64>("id")
+        let sugestao = Expression<String>("sugestão")
         private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
         private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
         private var font = CTFontCreateWithName("Helvetica" as CFString, 18, nil)
-    
+
         private let session = AVCaptureSession()
         private var scanImageView = ScanImageView(frame: .zero)
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
@@ -43,6 +50,8 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         override func viewDidLoad() {
             super.viewDidLoad()
             
+            database()
+            
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
             layout.itemSize = CGSize(width: 100, height: 50)
@@ -55,15 +64,11 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             collectionView?.delegate = self
             collectionView?.dataSource = self
             collectionView?.backgroundColor = UIColor(white: 1, alpha: 0)
-            
-            
-            
+
             guard let myCollection = collectionView else {
                 return
             }
-            
-        
-            
+
             cameraView.addSubview(myCollection)
             
             
@@ -82,6 +87,45 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             configureTextDetection()
         }
     
+    func database(){
+        connection()
+//        try? db?.run(sugestion.create {  t in
+//            t.column(id, primaryKey: .autoincrement)
+//            t.column(sugestao, unique: false)
+//        })
+    }
+    
+    func deleteRows(table: Table){
+        try! db?.run(table.delete())
+    }
+    
+    func printTable(){
+        do {
+                let stmt = try db!.prepare  ("SELECT * FROM sugestion")
+                for row in stmt {
+                        print("row \(row)")
+                    }
+        } catch {
+            print(error)
+        }
+    }
+    
+    private func connection(){
+        let path = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! + "/" + Bundle.main.bundleIdentifier!
+         try? FileManager.default.createDirectory( atPath: path, withIntermediateDirectories: true, attributes: nil )
+         db =  try? Connection("\(path)/db.sqlite3")
+        
+    }
+    
+    private func addTable(sug : String){
+        do {
+            let rowid = try db?.run(sugestion.insert(sugestao <- sug))
+            print("inserted id: \(rowid)")
+        } catch {
+            print("insertion failed: \(error)")
+        }
+    }
+
     //MARK: -- COLLECTION VIEW - SUGGEST TEXT
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -93,29 +137,25 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         return models.count
     }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CircleCollectionViewCell.identifier, for: indexPath) as! CircleCollectionViewCell
-        
-        cell.configure(with: data[indexPath.row])
-        
             
-//            let title = UILabel(frame: CGRect(x: 0, y: 5, width: cell.bounds.size.width, height: 40))
-//            title.textColor = UIColor.white
-//            title.text = models[indexPath.row]
-//            title.textAlignment = .center
-//            cell.contentView.addSubview(title)
-        
+            let title = UILabel(frame: CGRect(x: 0, y: 5, width: cell.bounds.size.width, height: 40))
+            title.textColor = UIColor.white
+            title.text = models[indexPath.row]
+            title.textAlignment = .center
+            cell.contentView.addSubview(title)
+            addTable(sug: title.text!)
+            printTable()
+            count += 1
+            
+        if( count > 3){
+            deleteRows(table: sugestion)
+            count = 0
+        }
+            
         return cell
     }
-    
-
-    
-    
-    //--------------------------------------------------------------------------------------------------------
-    
-    
     
     private var cameraView: ScanImageView {
         return scanImageView

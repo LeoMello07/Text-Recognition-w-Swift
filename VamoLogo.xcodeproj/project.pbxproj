@@ -18,7 +18,62 @@
 		623F85792526639C0088D764 /* CircleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623F85782526639C0088D764 /* CircleCollectionViewCell.swift */; };
 		629CAB9A24E30DD1000979C9 /* ScanImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CAB9924E30DD1000979C9 /* ScanImageView.swift */; };
 		629CAB9E24E30E03000979C9 /* OcrTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CAB9D24E30E03000979C9 /* OcrTextView.swift */; };
+		DD61013D252C9E760047F189 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61013C252C9E740047F189 /* libsqlite3.0.tbd */; };
+		DD610140252C9E810047F189 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61013F252C9E810047F189 /* libsqlite3.tbd */; };
+		DDFA0A38252CB10E00BB31EC /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDFA0A13252CB0A700BB31EC /* SQLite.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DDFA0A12252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247AD31C3F04ED00AE3E12;
+			remoteInfo = "SQLite iOS";
+		};
+		DDFA0A14252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247ADD1C3F04ED00AE3E12;
+			remoteInfo = "SQLiteTests iOS";
+		};
+		DDFA0A16252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247B3C1C3F3ED000AE3E12;
+			remoteInfo = "SQLite Mac";
+		};
+		DDFA0A18252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE247B451C3F3ED000AE3E12;
+			remoteInfo = "SQLiteTests Mac";
+		};
+		DDFA0A1A252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03A65E5A1C6BB0F50062603F;
+			remoteInfo = "SQLite tvOS";
+		};
+		DDFA0A1C252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03A65E631C6BB0F60062603F;
+			remoteInfo = "SQLiteTests tvOS";
+		};
+		DDFA0A1E252CB0A700BB31EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A121AC451CA35C79005A31D1;
+			remoteInfo = "SQLite watchOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		30742398EAFD20866BA00BED /* Pods_VamoLogo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VamoLogo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,6 +91,10 @@
 		629CAB9D24E30E03000979C9 /* OcrTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OcrTextView.swift; sourceTree = "<group>"; };
 		AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.release.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.release.xcconfig"; sourceTree = "<group>"; };
 		D921F188896AF0C87677C01D /* Pods-VamoLogo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VamoLogo.debug.xcconfig"; path = "Target Support Files/Pods-VamoLogo/Pods-VamoLogo.debug.xcconfig"; sourceTree = "<group>"; };
+		DD610138252C9DDB0047F189 /* VamoLogo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VamoLogo-Bridging-Header.h"; sourceTree = "<group>"; };
+		DD61013C252C9E740047F189 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		DD61013F252C9E810047F189 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = ../../SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +102,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDFA0A38252CB10E00BB31EC /* SQLite.framework in Frameworks */,
+				DD610140252C9E810047F189 /* libsqlite3.tbd in Frameworks */,
+				DD61013D252C9E760047F189 /* libsqlite3.0.tbd in Frameworks */,
 				1EFFD682D57E20093051952A /* Pods_VamoLogo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +153,8 @@
 				62255D9924DC436A00F0D509 /* Assets.xcassets */,
 				62255D9E24DC436A00F0D509 /* Info.plist */,
 				62255D9624DC436700F0D509 /* VamoLogo.xcdatamodeld */,
+				DD610138252C9DDB0047F189 /* VamoLogo-Bridging-Header.h */,
+				DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */,
 			);
 			path = VamoLogo;
 			sourceTree = "<group>";
@@ -98,9 +162,25 @@
 		9859DADAC6A3719C58EEA5E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD61013F252C9E810047F189 /* libsqlite3.tbd */,
+				DD61013C252C9E740047F189 /* libsqlite3.0.tbd */,
 				30742398EAFD20866BA00BED /* Pods_VamoLogo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DDFA0A09252CB0A700BB31EC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DDFA0A13252CB0A700BB31EC /* SQLite.framework */,
+				DDFA0A15252CB0A700BB31EC /* SQLiteTests iOS.xctest */,
+				DDFA0A17252CB0A700BB31EC /* SQLite.framework */,
+				DDFA0A19252CB0A700BB31EC /* SQLiteTests Mac.xctest */,
+				DDFA0A1B252CB0A700BB31EC /* SQLite.framework */,
+				DDFA0A1D252CB0A700BB31EC /* SQLiteTests tvOS.xctest */,
+				DDFA0A1F252CB0A700BB31EC /* SQLite.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +217,7 @@
 				TargetAttributes = {
 					62255D8924DC436700F0D509 = {
 						CreatedOnToolsVersion = 11.6;
+						LastSwiftMigration = 1200;
 					};
 				};
 			};
@@ -151,12 +232,70 @@
 			mainGroup = 62255D8124DC436700F0D509;
 			productRefGroup = 62255D8B24DC436700F0D509 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DDFA0A09252CB0A700BB31EC /* Products */;
+					ProjectRef = DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				62255D8924DC436700F0D509 /* VamoLogo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		DDFA0A13252CB0A700BB31EC /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = DDFA0A12252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DDFA0A15252CB0A700BB31EC /* SQLiteTests iOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests iOS.xctest";
+			remoteRef = DDFA0A14252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DDFA0A17252CB0A700BB31EC /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = DDFA0A16252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DDFA0A19252CB0A700BB31EC /* SQLiteTests Mac.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests Mac.xctest";
+			remoteRef = DDFA0A18252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DDFA0A1B252CB0A700BB31EC /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = DDFA0A1A252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DDFA0A1D252CB0A700BB31EC /* SQLiteTests tvOS.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SQLiteTests tvOS.xctest";
+			remoteRef = DDFA0A1C252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DDFA0A1F252CB0A700BB31EC /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = DDFA0A1E252CB0A700BB31EC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		62255D8824DC436700F0D509 /* Resources */ = {
@@ -369,8 +508,9 @@
 			baseConfigurationReference = D921F188896AF0C87677C01D /* Pods-VamoLogo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3GT25T74C9;
+				DEVELOPMENT_TEAM = 693UXZ5SG6;
 				INFOPLIST_FILE = VamoLogo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -378,6 +518,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Zaffari.TextRecog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VamoLogo/VamoLogo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -388,8 +530,9 @@
 			baseConfigurationReference = AA09B1D29ED70AEA06AAFD36 /* Pods-VamoLogo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3GT25T74C9;
+				DEVELOPMENT_TEAM = 693UXZ5SG6;
 				INFOPLIST_FILE = VamoLogo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -397,6 +540,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Zaffari.TextRecog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VamoLogo/VamoLogo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
