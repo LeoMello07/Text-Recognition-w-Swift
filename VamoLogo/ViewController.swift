@@ -19,15 +19,12 @@ import SQLite
 
 class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    
-    
     func updateSearchResults(for searchController: UISearchController) {
        
     }
         var count = 1
         private var db : Connection? = nil
         let sugestion = Table("sugestion")
-        let id = Expression<Int64>("id")
         let sugestao = Expression<String>("sugestão")
         private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
@@ -51,32 +48,14 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             super.viewDidLoad()
             
             database()
-            
-            let layout = UICollectionViewFlowLayout()
-            layout.scrollDirection = .horizontal
-            layout.itemSize = CGSize(width: 100, height: 50)
-            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            
-            collectionView?.register(CircleCollectionViewCell.self, forCellWithReuseIdentifier: CircleCollectionViewCell.identifier)
-            
-            collectionView?.showsHorizontalScrollIndicator = false
-            collectionView?.delegate = self
-            collectionView?.dataSource = self
-            collectionView?.backgroundColor = UIColor(white: 1, alpha: 0)
+            collection()
+            searchCont()
 
             guard let myCollection = collectionView else {
                 return
             }
 
             cameraView.addSubview(myCollection)
-            
-            
-            self.searchController = UISearchController(searchResultsController:  nil)
-            
-            self.searchController.searchResultsUpdater = self
-            self.searchController.delegate = self
-            self.searchController.searchBar.delegate = self
             
             ocrTextView.isEditable = false
             
@@ -86,6 +65,14 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             configureCamera()
             configureTextDetection()
         }
+    
+    func searchCont(){
+        self.searchController = UISearchController(searchResultsController:  nil)
+        
+        self.searchController.searchResultsUpdater = self
+        self.searchController.delegate = self
+        self.searchController.searchBar.delegate = self
+    }
     
     func database(){
         connection()
@@ -98,6 +85,24 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func deleteRows(table: Table){
         try! db?.run(table.delete())
     }
+    
+    func collection(){
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 100, height: 50)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        collectionView?.register(CircleCollectionViewCell.self, forCellWithReuseIdentifier: CircleCollectionViewCell.identifier)
+        
+        collectionView?.showsHorizontalScrollIndicator = false
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.backgroundColor = UIColor(white: 1, alpha: 0)
+    }
+    
+    
     
     func printTable(){
         do {
