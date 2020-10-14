@@ -23,7 +23,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     
         private var db : Connection? = nil
         let sugestion = Table("sugestion")
-        let sugestao = Expression<String>("sugestão")
+        let sugestao = Expression<String>("sugestao")
         private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
@@ -76,7 +76,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func database(){
         connection()
 //        try? db?.run(sugestion.create {  t in
-//            t.column(id, primaryKey: .autoincrement)
 //            t.column(sugestao, unique: false)
 //        })
     }
@@ -106,7 +105,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         do {
                 let stmt = try db!.prepare("SELECT * FROM sugestion")
                 for row in stmt {
-                    models.append(row[1] as! String)
+                    models.append(row[0] as! String)
                 }
         } catch {
             print(error)
@@ -152,6 +151,15 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.searchController.isActive = true
         self.searchController.searchBar.text =  models[indexPath.row]
+        
+        do {
+                let stmt = try db!.prepare("SELECT * FROM sugestion")
+                for row in stmt {
+                    print("to aqui: " + "\(row)")
+                }
+        } catch {
+            print(error)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -235,6 +243,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
             models.append(foundWord)
+            addTable(sug: foundWord)
             collectionView?.reloadData()
     }
   
