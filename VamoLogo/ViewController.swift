@@ -6,9 +6,6 @@
 //  Copyright © 2020 Leonardo Mello. All rights reserved.
 //
 
-
-//ARRUMAR O VIEWDIDLOAD, BOTAR EM MÉTODOS OS "REPETIDOS"
-
 import UIKit
 import SwiftUI
 import Vision
@@ -17,12 +14,13 @@ import AVFoundation
 import TesseractOCR
 import SQLite
 
+
 class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func updateSearchResults(for searchController: UISearchController) {
        
     }
-        var count = 1
+    
         private var db : Connection? = nil
         let sugestion = Table("sugestion")
         let sugestao = Expression<String>("sugestão")
@@ -48,9 +46,10 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             super.viewDidLoad()
             
             database()
+            printTable()
             collection()
             searchCont()
-
+            
             guard let myCollection = collectionView else {
                 return
             }
@@ -85,7 +84,8 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func deleteRows(table: Table){
         try! db?.run(table.delete())
     }
-    
+
+
     func collection(){
         
         let layout = UICollectionViewFlowLayout()
@@ -102,14 +102,12 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         collectionView?.backgroundColor = UIColor(white: 1, alpha: 0)
     }
     
-    
-    
     func printTable(){
         do {
-                let stmt = try db!.prepare  ("SELECT * FROM sugestion")
+                let stmt = try db!.prepare("SELECT * FROM sugestion")
                 for row in stmt {
-                        print("row \(row)")
-                    }
+                    models.append(row[1] as! String)
+                }
         } catch {
             print(error)
         }
@@ -125,10 +123,11 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     private func addTable(sug : String){
         do {
             let rowid = try db?.run(sugestion.insert(sugestao <- sug))
-            print("inserted id: \(rowid)")
+            print("inserted id: \(String(describing: rowid))")
         } catch {
             print("insertion failed: \(error)")
         }
+
     }
 
     //MARK: -- COLLECTION VIEW - SUGGEST TEXT
@@ -144,23 +143,24 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CircleCollectionViewCell.identifier, for: indexPath) as! CircleCollectionViewCell
-            
-            let title = UILabel(frame: CGRect(x: 0, y: 5, width: cell.bounds.size.width, height: 40))
-            title.textColor = UIColor.white
-            title.text = models[indexPath.row]
-            title.textAlignment = .center
-            cell.contentView.addSubview(title)
-            addTable(sug: title.text!)
-            printTable()
-            count += 1
-            
-        if( count > 3){
-            deleteRows(table: sugestion)
-            count = 0
-        }
-            
+        
+            cell.configure(with: models[indexPath.row])
+        
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.searchController.isActive = true
+        self.searchController.searchBar.text =  models[indexPath.row]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+      return 1
+  }
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+      return 1
+  }
+    
     
     private var cameraView: ScanImageView {
         return scanImageView

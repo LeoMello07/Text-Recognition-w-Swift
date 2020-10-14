@@ -17,6 +17,15 @@ class CircleCollectionViewCell: UICollectionViewCell {
     
     
     //IMAGEM DA SUGESTÃO
+    private let title: UILabel = {
+        let title = UILabel(frame: CGRect(x: 0, y: 5, width: 40, height: 40))
+        title.textColor = UIColor.white
+        title.textAlignment = .center
+        
+        return title
+    }()
+    
+    
     private let myImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -33,6 +42,7 @@ class CircleCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(myImageView)
+        contentView.addSubview(title)
     }
     
     required init?(coder: NSCoder) {
@@ -42,12 +52,16 @@ class CircleCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         myImageView.frame = contentView.bounds
+        title.frame = contentView.bounds
     }
     
     public func configure(with name: String){
-        myImageView.image = UIImage(named: name)
+      // myImageView.image = UIImage(named: name)
+        title.text = name
         
     }
+    
+    
     
     override func prepareForReuse() {
         super.prepareForReuse()
