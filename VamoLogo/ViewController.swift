@@ -36,7 +36,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
         private var ocrRequest = VNRecognizeTextRequest(completionHandler: nil)
     
-//      private var isRed: Bool = false
         private var foundWord = " "
     
         private var models = [String]()
@@ -143,7 +142,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CircleCollectionViewCell.identifier, for: indexPath) as! CircleCollectionViewCell
 
-        
             let button = UIButton(frame: CGRect(x: 75, y: 15, width: 20, height: 20))
             button.setImage(UIImage(named: "trash.png"), for: UIControl.State.normal)
         
@@ -171,6 +169,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.searchController.isActive = true
         self.searchController.searchBar.text =  models[indexPath.row]
+        searchBar(self.searchController.searchBar, textDidChange: models[indexPath.row] )
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -257,18 +256,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             addTable(sug: foundWord)
             collectionView?.reloadData()
     }
-  
-
-//    private func colorText(_ text : String){
-//        let main_string = ocrTextView.text
-//        let string_to_color = text
-//        let range = (main_string! as NSString).range(of: string_to_color)
-//        let attribute = NSMutableAttributedString.init(string: main_string!)
-//        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
-//        ocrTextView.attributedText = attribute
-//        isRed = true
-//
-//    }
 
     private func handleDetection(request: VNRequest, error: Error?) {
         
@@ -283,36 +270,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             return
         }
         textObservations = textResults as! [VNTextObservation]
-        DispatchQueue.main.async {
-            
-            guard let sublayers = self.view.layer.sublayers else {
-                return
-            }
-            for layer in sublayers[1...] {
-                if (layer as? CATextLayer) == nil {
-                    layer.removeFromSuperlayer()
-                }
-            }
-            let viewWidth = self.view.frame.size.width
-            let viewHeight = self.view.frame.size.height
-            for result in textResults {
-
-                if let textResult = result {
-                    
-                    let layer = CALayer()
-                    var rect = textResult.boundingBox
-                    rect.origin.x *= viewWidth
-                    rect.size.height *= viewHeight
-                    rect.origin.y = ((1 - rect.origin.y) * viewHeight) - rect.size.height
-                    rect.size.width *= viewWidth
-
-                    layer.frame = rect
-                    layer.borderWidth = 2
-                    layer.borderColor = UIColor.red.cgColor
-                    self.view.layer.addSublayer(layer)
-                }
-            }
-        }
     }
         
 
@@ -409,46 +366,5 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     catch {
         print("Error occured \(error)")
     }
-    var ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-    let transform = ciImage.orientationTransform(for: CGImagePropertyOrientation(rawValue: 6)!)
-    ciImage = ciImage.transformed(by: transform)
-    let size = ciImage.extent.size
-    var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
-    for textObservation in textObservations {
-        guard let rects = textObservation.characterBoxes else {
-            continue
-        }
-        var xMin = CGFloat.greatestFiniteMagnitude
-        var xMax: CGFloat = 0
-        var yMin = CGFloat.greatestFiniteMagnitude
-        var yMax: CGFloat = 0
-        for rect in rects {
-            
-            xMin = min(xMin, rect.bottomLeft.x)
-            xMax = max(xMax, rect.bottomRight.x)
-            yMin = min(yMin, rect.bottomRight.y)
-            yMax = max(yMax, rect.topRight.y)
-            
-        }
-        let imageRect = CGRect(x: xMin * size.width, y: yMin * size.height, width: (xMax - xMin) * size.width, height: (yMax - yMin) * size.height)
-        let context = CIContext(options: nil)
-        guard let cgImage = context.createCGImage(ciImage, from: imageRect) else {
-            continue
-        }
-        let uiImage = UIImage(cgImage: cgImage)
-        tesseract?.image = uiImage
-        tesseract?.recognize()
-        guard var text = tesseract?.recognizedText else {
-            continue
-        }
-        text = text.trimmingCharacters(in: CharacterSet.newlines)
-        if !text.isEmpty {
-            let x = xMin
-            let y = 1 - yMax
-            let width = xMax - xMin
-            let height = yMax - yMin
-            recognizedTextPositionTuples.append((rect: CGRect(x: x, y: y, width: width, height: height), text: text))
-            }
-        }
     }
 }
