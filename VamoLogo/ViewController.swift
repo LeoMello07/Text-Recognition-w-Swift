@@ -23,13 +23,14 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     
         private var db : Connection? = nil
         let sugestion = Table("sugestion")
+        let id = Expression<Int>("id")
         let sugestao = Expression<String>("sugestao")
         private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
         private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
         private var font = CTFontCreateWithName("Helvetica" as CFString, 18, nil)
-
+        
         private let session = AVCaptureSession()
         private var scanImageView = ScanImageView(frame: .zero)
         private var ocrTextView = OcrTextView(frame: .zero, textContainer: nil)
@@ -76,13 +77,12 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     func database(){
         connection()
 //        try? db?.run(sugestion.create {  t in
+//            t.column(id, primaryKey: .autoincrement)
 //            t.column(sugestao, unique: false)
 //        })
     }
     
-    func deleteRows(table: Table){
-        try! db?.run(table.delete())
-    }
+
 
 
     func collection(){
@@ -105,7 +105,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         do {
                 let stmt = try db!.prepare("SELECT * FROM sugestion")
                 for row in stmt {
-                    models.append(row[0] as! String)
+                    models.append(row[1] as! String)
                 }
         } catch {
             print(error)
@@ -142,24 +142,35 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CircleCollectionViewCell.identifier, for: indexPath) as! CircleCollectionViewCell
+
         
+            let button = UIButton(frame: CGRect(x: 75, y: 15, width: 20, height: 20))
+            button.setImage(UIImage(named: "trash.png"), for: UIControl.State.normal)
+        
+            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            cell.addSubview(button)
+    
             cell.configure(with: models[indexPath.row])
         
         return cell
     }
     
+    @objc func buttonAction(sender: UIButton!) {
+        let indexPath = IndexPath(item: sender.tag, section: 0)
+
+        models.remove(at: indexPath.row)
+
+        self.collectionView?.performBatchUpdates({
+            self.collectionView?.deleteItems(at: [indexPath])
+            }) { (finished) in
+            self.collectionView?.reloadItems(at: self.collectionView!.indexPathsForVisibleItems)
+            }
+        
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.searchController.isActive = true
         self.searchController.searchBar.text =  models[indexPath.row]
-        
-        do {
-                let stmt = try db!.prepare("SELECT * FROM sugestion")
-                for row in stmt {
-                    print("to aqui: " + "\(row)")
-                }
-        } catch {
-            print(error)
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
