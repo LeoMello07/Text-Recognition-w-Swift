@@ -10,6 +10,8 @@ import UIKit
 
 class OcrTextView: UITextView {
     
+    let newSwiftColor = UIColor(red: 5, green: 92, blue: 8)
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: .zero, textContainer: textContainer)
         configure()
@@ -23,8 +25,11 @@ class OcrTextView: UITextView {
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        layer.borderColor = UIColor.systemTeal.cgColor
-        font = .systemFont(ofSize: 16.0)
+        layer.borderWidth = 2
+        layer.cornerRadius = 15
+        layer.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
+        layer.borderColor = newSwiftColor.cgColor
+        font = .systemFont(ofSize: 24.0)
     }
 }
 

@@ -15,7 +15,6 @@ class CircleCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "CircleCollectionViewCell"
     
-    
     //IMAGEM DA SUGESTÃO
     private let title: UILabel = {
         let title = UILabel(frame: CGRect(x: 0, y: 5, width: 40, height: 40))
@@ -33,7 +32,7 @@ class CircleCollectionViewCell: UICollectionViewCell {
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 25
-        imageView.backgroundColor = UIColor(red: 0, green: 0.80, blue: 0.45, alpha: 1)
+        imageView.backgroundColor = UIColor(red: 43, green: 43, blue: 43)
         
         return imageView
     }()

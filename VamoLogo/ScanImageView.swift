@@ -44,7 +44,6 @@ class ScanImageView: UIView {
     
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor.init(white: 1.0, alpha: 0.1)
         clipsToBounds = true
     }
 }

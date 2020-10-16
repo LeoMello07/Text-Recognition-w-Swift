@@ -20,6 +20,7 @@
 		629CAB9E24E30E03000979C9 /* OcrTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CAB9D24E30E03000979C9 /* OcrTextView.swift */; };
 		DD61013D252C9E760047F189 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61013C252C9E740047F189 /* libsqlite3.0.tbd */; };
 		DD610140252C9E810047F189 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61013F252C9E810047F189 /* libsqlite3.tbd */; };
+		DD817ECC2539D18A0011855D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD817ECB2539D17C0011855D /* Util.swift */; };
 		DDFA0A38252CB10E00BB31EC /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDFA0A13252CB0A700BB31EC /* SQLite.framework */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		DD610138252C9DDB0047F189 /* VamoLogo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VamoLogo-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD61013C252C9E740047F189 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		DD61013F252C9E810047F189 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		DD817ECB2539D17C0011855D /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DDFA0A08252CB0A700BB31EC /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = ../../SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,6 +149,7 @@
 				629CAB9924E30DD1000979C9 /* ScanImageView.swift */,
 				629CAB9D24E30E03000979C9 /* OcrTextView.swift */,
 				623F85782526639C0088D764 /* CircleCollectionViewCell.swift */,
+				DD817ECB2539D17C0011855D /* Util.swift */,
 				62255D8F24DC436700F0D509 /* SceneDelegate.swift */,
 				62255D9324DC436700F0D509 /* Main.storyboard */,
 				62255D9B24DC436A00F0D509 /* LaunchScreen.storyboard */,
@@ -360,6 +363,7 @@
 				629CAB9E24E30E03000979C9 /* OcrTextView.swift in Sources */,
 				62255D9224DC436700F0D509 /* ViewController.swift in Sources */,
 				623F85792526639C0088D764 /* CircleCollectionViewCell.swift in Sources */,
+				DD817ECC2539D18A0011855D /* Util.swift in Sources */,
 				62255D9824DC436700F0D509 /* VamoLogo.xcdatamodeld in Sources */,
 				62255D8E24DC436700F0D509 /* AppDelegate.swift in Sources */,
 				62255D9024DC436700F0D509 /* SceneDelegate.swift in Sources */,

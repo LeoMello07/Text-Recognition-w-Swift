@@ -28,8 +28,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private var collectionView: UICollectionView?
         private var textObservations = [VNTextObservation]()
         private var textDetectionRequest: VNDetectTextRectanglesRequest?
-        private var tesseract = G8Tesseract(language: "eng", engineMode: .tesseractOnly)
-        private var font = CTFontCreateWithName("Helvetica" as CFString, 18, nil)
         
         private let session = AVCaptureSession()
         private var scanImageView = ScanImageView(frame: .zero)
@@ -57,6 +55,9 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             cameraView.addSubview(myCollection)
             
             ocrTextView.isEditable = false
+            ocrTextView.textColor = .black
+        
+            
             
             showSearch()
             configure()
@@ -220,19 +221,17 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             view.addSubview(scanImageView)
             view.addSubview(ocrTextView)
             
-            let padding: CGFloat = 16
-            let allCamera: CGFloat = 0
             NSLayoutConstraint.activate([
 
-                ocrTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-                ocrTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-                ocrTextView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+                ocrTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                ocrTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                ocrTextView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
                 ocrTextView.heightAnchor.constraint(equalToConstant: 100),
                 
-                scanImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: allCamera),
-                scanImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: allCamera),
-                scanImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -allCamera),
-                scanImageView.bottomAnchor.constraint(equalTo: ocrTextView.topAnchor, constant: -allCamera),
+                scanImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+                scanImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                scanImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -0),
+                scanImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor , constant: -0),
                 
             ])
         }
@@ -279,6 +278,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
 
             ocrTextView.text = ""
             
+            
             let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             do {
                 try requestHandler.perform([self.ocrRequest])
@@ -290,8 +290,9 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         private func configureOCR() {
             ocrRequest = VNRecognizeTextRequest { (request, error) in
                 guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
-                
+        
                 var ocrText = ""
+                
                 for observation in observations {
                     guard let topCandidate = observation.topCandidates(1).first else { return }
                     
@@ -313,7 +314,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                     if(ocrText.contains(self.foundWord)){
                         self.ocrTextView.text = "Contém: " + self.foundWord
                     } else {
-                        self.ocrTextView.text =  "Palavra não encontrada: " + self.foundWord
+                        self.ocrTextView.text =  "Não contém: " + self.foundWord
                     }
                 }
             }
