@@ -43,6 +43,7 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         override func viewDidLoad() {
             super.viewDidLoad()
             
+            connection()
             database()
             printTable()
             collection()
@@ -57,8 +58,6 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             ocrTextView.isEditable = false
             ocrTextView.textColor = .black
         
-            
-            
             showSearch()
             configure()
             configureOCR()
@@ -75,11 +74,19 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     }
     
     func database(){
-        connection()
-//        try? db?.run(sugestion.create {  t in
-//            t.column(id, primaryKey: .autoincrement)
-//            t.column(sugestao, unique: false)
-//        })
+        let connection = try? Connection()
+        let table = Table("sugestao")
+        do {
+            try connection?.scalar(table.exists)
+            print("talbe already exist!")
+        } catch {
+            print("criando tabela.")
+                    try? db?.run(sugestion.create {  t in
+                        t.column(id, primaryKey: .autoincrement)
+                        t.column(sugestao, unique: false)
+                    })
+        }
+
     }
     
 
@@ -309,9 +316,10 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
                        if textResults.isEmpty {
                            return
                        }
- 
+
                 DispatchQueue.main.async {
-                    if(ocrText.contains(self.foundWord)){
+                    
+                    if(ocrText.lowercased().contains(self.foundWord.lowercased())){
                         self.ocrTextView.text = "Contém: " + self.foundWord
                     } else {
                         self.ocrTextView.text =  "Não contém: " + self.foundWord
